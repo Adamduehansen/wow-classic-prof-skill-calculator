@@ -9,7 +9,7 @@ function App() {
     <div>
       <header>
         <h1 tabIndex={0}>
-          World of Warcraft Classic Profession Level Assistant
+          World of Warcraft Classic Profession Skill Calculator
         </h1>
       </header>
       <main>
