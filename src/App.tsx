@@ -1,9 +1,21 @@
 import { useState } from 'react';
 import calculateSkill from './lib/calculateSkill';
 
+const LOCAL_STORAGE_LEVEL = 'LOCAL_STORAGE_LEVEL';
+const DEFAULT_LEVEL = 10;
+
+function getLevelFromLocalStorageOrDefault(): number {
+  const storedLevel = localStorage.getItem(LOCAL_STORAGE_LEVEL);
+  if (storedLevel) {
+    return parseInt(storedLevel);
+  } else {
+    return DEFAULT_LEVEL;
+  }
+}
+
 function App() {
-  const [level, setLevel] = useState(10);
-  const [result, setResult] = useState(calculateSkill(10));
+  const [level, setLevel] = useState(getLevelFromLocalStorageOrDefault());
+  const [result, setResult] = useState(calculateSkill(level));
 
   return (
     <div>
@@ -25,6 +37,7 @@ function App() {
               const value = parseInt(event.target.value, 0);
               setLevel(value);
               setResult(calculateSkill(value));
+              localStorage.setItem(LOCAL_STORAGE_LEVEL, value.toString());
             }}
           />
           {level}
