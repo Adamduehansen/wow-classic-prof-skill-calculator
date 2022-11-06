@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import confetti from 'canvas-confetti';
 import calculateSkill from './lib/calculateSkill';
 
 const LOCAL_STORAGE_LEVEL = 'LOCAL_STORAGE_LEVEL';
@@ -13,7 +14,7 @@ function getLevelFromLocalStorageOrDefault(): number {
   }
 }
 
-function App() {
+function App(): JSX.Element {
   const [level, setLevel] = useState(getLevelFromLocalStorageOrDefault());
   const [result, setResult] = useState(calculateSkill(level));
 
@@ -33,11 +34,16 @@ function App() {
             min='1'
             max='80'
             value={level}
-            onChange={(event) => {
+            onChange={(event): void => {
               const value = parseInt(event.target.value, 0);
               setLevel(value);
               setResult(calculateSkill(value));
               localStorage.setItem(LOCAL_STORAGE_LEVEL, value.toString());
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+              });
             }}
           />
           {level}
