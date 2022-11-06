@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import confetti from 'canvas-confetti';
-import calculateSkill from './lib/calculateSkill';
+import Calculator from './components/Calculator';
 
 const LOCAL_STORAGE_LEVEL = 'LOCAL_STORAGE_LEVEL';
 const DEFAULT_LEVEL = 10;
@@ -15,8 +14,17 @@ function getLevelFromLocalStorageOrDefault(): number {
 }
 
 function App(): JSX.Element {
-  const [level, setLevel] = useState(getLevelFromLocalStorageOrDefault());
-  const [result, setResult] = useState(calculateSkill(level));
+  function onChangeHandler(oldValue: number, newValue: number): void {
+    localStorage.setItem(LOCAL_STORAGE_LEVEL, newValue.toString());
+    if (oldValue >= newValue) {
+      return;
+    }
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  }
 
   return (
     <div>
@@ -26,31 +34,10 @@ function App(): JSX.Element {
         </h1>
       </header>
       <main>
-        <div>
-          <label htmlFor='level-range'>Level</label>
-          <input
-            type='range'
-            id='level-range'
-            min='1'
-            max='80'
-            value={level}
-            onChange={(event): void => {
-              const value = parseInt(event.target.value, 0);
-              setLevel(value);
-              setResult(calculateSkill(value));
-              localStorage.setItem(LOCAL_STORAGE_LEVEL, value.toString());
-              confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-              });
-            }}
-          />
-          {level}
-        </div>
-        <p>
-          Your profession levels should be at <strong>{result}</strong>
-        </p>
+        <Calculator
+          defaultValue={getLevelFromLocalStorageOrDefault()}
+          onChange={onChangeHandler}
+        />
       </main>
     </div>
   );
