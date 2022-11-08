@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import calculateSkill from '../lib/calculateSkill';
+import classes from './Calculator.module.css';
 
 interface Props {
   defaultValue: number;
@@ -13,7 +14,9 @@ function Calculator({ defaultValue, onChange }: Props): JSX.Element {
   return (
     <>
       <div>
-        <label htmlFor='level-range'>Level</label>
+        <label htmlFor='level-range' className='block'>
+          Level: <span className='text-blue-500'>{level}</span>
+        </label>
         <input
           type='range'
           id='level-range'
@@ -27,11 +30,12 @@ function Calculator({ defaultValue, onChange }: Props): JSX.Element {
             setLevel(value);
             setResult(calculateSkill(value));
           }}
+          className={classes.slider}
         />
-        {level}
       </div>
       <p>
-        Your profession levels should be at <strong>{result}</strong>
+        Your profession levels should be at{' '}
+        <strong className='text-blue-500'>{result}</strong>
       </p>
     </>
   );

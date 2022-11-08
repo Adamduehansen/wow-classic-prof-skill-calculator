@@ -16,20 +16,19 @@ function getLevelFromLocalStorageOrDefault(): number {
 function App(): JSX.Element {
   function onChangeHandler(oldValue: number, newValue: number): void {
     localStorage.setItem(LOCAL_STORAGE_LEVEL, newValue.toString());
-    if (oldValue >= newValue) {
-      return;
+    if (newValue === oldValue + 1) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
     }
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
   }
 
   return (
-    <div>
-      <header>
-        <h1 tabIndex={0}>
+    <div className='w-96 p-4 bg-blue-900 text-white border-2 border-black rounded'>
+      <header className='mb-4'>
+        <h1 className='text-3xl pb-2 border-b-2 border-b-white' tabIndex={0}>
           World of Warcraft Classic Profession Skill Calculator
         </h1>
       </header>
